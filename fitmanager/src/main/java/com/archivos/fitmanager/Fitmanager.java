@@ -1,8 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
 
 package com.archivos.fitmanager;
+
+import com.archivos.fitmanager.ui.Login;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -11,6 +11,10 @@ package com.archivos.fitmanager;
 public class Fitmanager {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        
+        SwingUtilities.invokeLater(() ->{
+            Login ventana = new Login();
+            ventana.setVisible(true);
+        });
     }
 }
