@@ -5,6 +5,8 @@ import com.archivos.fitmanager.model.Empleado;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -42,5 +44,60 @@ public class EmpleadoDAO {
         }
         return null;
     }
-    
+
+    public boolean registrarEmpleado(Empleado emp) {
+        String sql = """
+        INSERT INTO empleado (nombre, apellido, telefono, usuario_login, contrasena, id_rol, id_sucursal)
+        VALUES (?, ?, ?, ?, crypt(?, gen_salt('bf')), ?, ?)
+    """;
+
+        try (Connection con = DBConfig.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, emp.getNombre());
+            ps.setString(2, emp.getApellido());
+            ps.setString(3, emp.getTelefono());
+            ps.setString(4, emp.getUsuarioLogin());
+            ps.setString(5, emp.getContrasena());
+            ps.setInt(6, emp.getIdRol());
+            if (emp.getIdSucursal() != null) {
+                ps.setInt(7, emp.getIdSucursal());
+            } else {
+                ps.setNull(7, java.sql.Types.INTEGER);
+            }
+
+            ps.executeUpdate();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Empleado> obtenerEntrenadores() {
+        List<Empleado> lista = new ArrayList<>();
+        String sql = """
+        SELECT e.id_empleado, e.nombre, e.apellido
+        FROM empleado e
+        JOIN rol r ON e.id_rol = r.id_rol
+        WHERE r.nombre = 'Entrenador'
+        ORDER BY e.nombre, e.apellido
+    """;
+
+        try (Connection con = DBConfig.getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Empleado e = new Empleado();
+                e.setIdEmpleado(rs.getInt("id_empleado"));
+                e.setNombre(rs.getString("nombre"));
+                e.setApellido(rs.getString("apellido"));
+                lista.add(e);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return lista;
+    }
+
 }

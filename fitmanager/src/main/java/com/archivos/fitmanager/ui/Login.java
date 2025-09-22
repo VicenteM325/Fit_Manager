@@ -3,6 +3,9 @@ package com.archivos.fitmanager.ui;
 
 import com.archivos.fitmanager.dao.EmpleadoDAO;
 import com.archivos.fitmanager.model.Empleado;
+import com.archivos.fitmanager.ui.admin.Admin;
+import com.archivos.fitmanager.ui.recepcion.Recepcion;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -208,14 +211,31 @@ public class Login extends javax.swing.JFrame {
     Empleado emp = empleadoDAO.login(usuario, contrasena);
 
     if (emp != null) {
-        // Login exitoso
-        JOptionPane.showMessageDialog(this, "Bienvenido " + emp.getNombre() + " " + emp.getApellido(), "Login Exitoso", JOptionPane.INFORMATION_MESSAGE);
+        switch (emp.getRolNombre()) {
+        case "Administrador" -> {
+            JFrame adminFrame = new Admin(); 
+            adminFrame.setVisible(true);
+        }
+        case "Recepcionista" -> {
+            JFrame recepcionFrame = new Recepcion(); 
+            recepcionFrame.setVisible(true);
+        }
 
-
-    } else {
-        // Login fallido
-        JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Login Fallido", JOptionPane.ERROR_MESSAGE);
+        default -> {
+            JOptionPane.showMessageDialog(this, 
+                "Rol no reconocido: " + emp.getRolNombre(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
+
+    this.dispose();
+
+} else {
+    JOptionPane.showMessageDialog(this, 
+        "Usuario o contraseña incorrectos", 
+        "Login Fallido", JOptionPane.ERROR_MESSAGE);
+}
+
 }
     
 

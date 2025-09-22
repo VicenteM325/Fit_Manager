@@ -67,4 +67,9 @@ public class Empleado {
 
     public Integer getIdSucursal() { return idSucursal; }
     public void setIdSucursal(Integer idSucursal) { this.idSucursal = idSucursal; }
+    
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }
