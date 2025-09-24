@@ -9,6 +9,7 @@ import java.sql.Date;
 public class Pago {
     private int idPago;
     private int idTipoPago;
+    private int idPlan;
     private double monto;
     private Date fechaPago;
     private Date fechaInicio;
@@ -23,6 +24,9 @@ public class Pago {
 
     public int getIdTipoPago() { return idTipoPago; }
     public void setIdTipoPago(int idTipoPago) { this.idTipoPago = idTipoPago; }
+    
+    public int getIdPlan() { return idPlan; }
+    public void setIdPlan(int idPlan) { this.idPlan = idPlan; }
 
     public double getMonto() { return monto; }
     public void setMonto(double monto) { this.monto = monto; }

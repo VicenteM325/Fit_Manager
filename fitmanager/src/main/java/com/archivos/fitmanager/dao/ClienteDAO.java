@@ -5,6 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -76,5 +79,44 @@ public class ClienteDAO {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    public List<Cliente> obtenerClientes() throws SQLException {
+        List<Cliente> clientes = new ArrayList<>();
+        String sql = "SELECT id_cliente, nombre FROM cliente";
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Cliente c = new Cliente();
+                c.setIdCliente(rs.getInt("id_cliente"));
+                c.setNombre(rs.getString("nombre"));
+                clientes.add(c);
+            }
+        }
+        return clientes;
+    }
+
+    // Buscar clientes por nombre o apellido
+    public List<Cliente> buscarClientesPorNombre(String nombre) throws SQLException {
+        List<Cliente> clientes = new ArrayList<>();
+        String sql = "SELECT id_cliente, nombre, apellido FROM cliente "
+                + "WHERE LOWER(nombre) LIKE LOWER(?) OR LOWER(apellido) LIKE LOWER(?) "
+                + "ORDER BY nombre LIMIT 10";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + nombre + "%");
+            ps.setString(2, "%" + nombre + "%");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Cliente c = new Cliente();
+                c.setIdCliente(rs.getInt("id_cliente"));
+                c.setNombre(rs.getString("nombre") + " " + rs.getString("apellido"));
+                clientes.add(c);
+            }
+        }
+        return clientes;
     }
 }

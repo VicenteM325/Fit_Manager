@@ -3,6 +3,9 @@ package com.archivos.fitmanager.controller;
 import com.archivos.fitmanager.dao.ClienteDAO;
 import com.archivos.fitmanager.model.Cliente;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,5 +30,12 @@ public class ClienteController {
 
         Cliente cliente = new Cliente(nombre, apellido, telefono, idEntrenador, idMembresia);
         return clienteDAO.registrarClienteCompleto(cliente);
+    }
+
+    public List<Cliente> buscarClientesPorNombre(String nombre) throws SQLException {
+        if (nombre == null || nombre.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return clienteDAO.buscarClientesPorNombre(nombre);
     }
 }

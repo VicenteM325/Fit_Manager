@@ -123,6 +123,14 @@ CREATE TABLE servicio_adicional (
     costo NUMERIC(10,2) NOT NULL
 );
 
+-- TABLA PLAN BASICO
+CREATE TABLE plan_basico (
+    id_plan SERIAL PRIMARY KEY,
+    nombre VARCHAR(20) NOT NULL,  
+    duracion_meses INT NOT NULL,   
+    costo NUMERIC(10,2) NOT NULL
+);
+
 -- TABLA TIPO_PAGO --
 CREATE TABLE tipo_pago (
     id_tipo_pago SERIAL PRIMARY KEY,
@@ -156,6 +164,7 @@ CREATE TABLE pago_membresia (
     id_membresia INT REFERENCES membresia(id_membresia) ON DELETE CASCADE,
     PRIMARY KEY (id_pago, id_membresia)
 );
+
 
 -- TABLA PRODUCTO --
 CREATE TABLE producto (
