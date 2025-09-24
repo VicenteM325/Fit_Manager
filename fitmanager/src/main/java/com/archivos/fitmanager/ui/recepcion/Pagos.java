@@ -340,7 +340,7 @@ public class Pagos extends javax.swing.JPanel {
         txtFechaFin.setForeground(new java.awt.Color(195, 218, 227));
         txtFechaFin.setBorder(null);
         txtFechaFin.setCaretColor(new java.awt.Color(73, 181, 172));
-        add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 360, 570, 50));
+        add(txtFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 360, 320, 50));
 
         txtMonto.setBackground(new java.awt.Color(33, 45, 62));
         txtMonto.setFont(new java.awt.Font("Gotham Thin", 0, 18)); // NOI18N
@@ -454,6 +454,10 @@ public class Pagos extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboBoxIdClienteActionPerformed
 
     private void jComboBoxTipoPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoPagoActionPerformed
+        jLabelPlan.setVisible(false);
+        jComboBoxPlan.setVisible(false);
+        jScrollPane1.setVisible(false);
+
         String seleccionado = (String) jComboBoxTipoPago.getSelectedItem();
         if (seleccionado != null && seleccionado.contains(" - ")) {
             String nombreTipo = seleccionado.split(" - ")[1];
@@ -461,12 +465,12 @@ public class Pagos extends javax.swing.JPanel {
                 jLabelPlan.setVisible(true);
                 jComboBoxPlan.setVisible(true);
                 cargarPlanes();
-            } else if("SERVICIO_ADICIONAL".equalsIgnoreCase(nombreTipo)){
+            } else if ("SERVICIO_ADICIONAL".equalsIgnoreCase(nombreTipo)) {
                 jLabelPlan.setVisible(true);
                 jScrollPane1.setVisible(true);
                 cargarServiciosAdicionales();
-                
-            }else {
+
+            } else {
                 jLabelPlan.setVisible(false);
                 jScrollPane1.setVisible(false);
                 jComboBoxPlan.setVisible(false);

@@ -4,6 +4,7 @@ package com.archivos.fitmanager.ui;
 import com.archivos.fitmanager.dao.EmpleadoDAO;
 import com.archivos.fitmanager.model.Empleado;
 import com.archivos.fitmanager.ui.admin.Admin;
+import com.archivos.fitmanager.ui.entrenador.Entrenador;
 import com.archivos.fitmanager.ui.recepcion.Recepcion;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -220,6 +221,11 @@ public class Login extends javax.swing.JFrame {
             JFrame recepcionFrame = new Recepcion(); 
             recepcionFrame.setVisible(true);
         }
+        case "Entrenador" -> {
+            JFrame entrenadorFrame = new Entrenador(); 
+            entrenadorFrame.setVisible(true);
+        }
+
 
         default -> {
             JOptionPane.showMessageDialog(this, 

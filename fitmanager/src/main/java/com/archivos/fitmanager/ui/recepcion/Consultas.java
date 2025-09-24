@@ -1,20 +1,39 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package com.archivos.fitmanager.ui.recepcion;
+
+import com.archivos.fitmanager.controller.AsistenciaController;
+import com.archivos.fitmanager.controller.ClienteController;
+import com.archivos.fitmanager.controller.ConsultasController;
+import com.archivos.fitmanager.db.DBConfig;
+import com.archivos.fitmanager.model.Cliente;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author vicente
  */
 public class Consultas extends javax.swing.JPanel {
+    
+    private ClienteController clienteController;
+    private AsistenciaController asistenciaController;
 
     /**
      * Creates new form Consultas
      */
     public Consultas() {
         initComponents();
+        try {
+            Connection conn = DBConfig.getConnection(); 
+            this.clienteController = new ClienteController(conn); 
+            this.asistenciaController = new AsistenciaController();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        jComboBoxClientesId.setVisible(false);
+        jLabelCoincidencias.setVisible(false);
+        jScrollPane1.setVisible(false);
     }
 
     /**
@@ -26,10 +45,179 @@ public class Consultas extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabelSeparador = new javax.swing.JLabel();
+        jLabelDescripcion = new javax.swing.JLabel();
+        txtNombreUser = new javax.swing.JTextField();
+        jLabelNombreCliente = new javax.swing.JLabel();
+        txtIdUser = new javax.swing.JTextField();
+        jLabelidCliente = new javax.swing.JLabel();
+        jComboBoxClientesId = new javax.swing.JComboBox<>();
+        jSeparator2 = new javax.swing.JSeparator();
+        jSeparator3 = new javax.swing.JSeparator();
+        jLabelCoincidencias = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jListHistorial = new javax.swing.JList<>();
+        btnLimpiar = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(33, 45, 62));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabelSeparador.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
+        jLabelSeparador.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelSeparador.setText("____________");
+        add(jLabelSeparador, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 20, -1, 30));
+
+        jLabelDescripcion.setFont(new java.awt.Font("DejaVu Math TeX Gyre", 1, 24)); // NOI18N
+        jLabelDescripcion.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelDescripcion.setText("CONSULTAS");
+        add(jLabelDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 0, 160, 60));
+
+        txtNombreUser.setBackground(new java.awt.Color(33, 45, 62));
+        txtNombreUser.setFont(new java.awt.Font("Gotham Thin", 0, 18)); // NOI18N
+        txtNombreUser.setForeground(new java.awt.Color(195, 218, 227));
+        txtNombreUser.setBorder(null);
+        txtNombreUser.setCaretColor(new java.awt.Color(73, 181, 172));
+        txtNombreUser.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNombreUserKeyReleased(evt);
+            }
+        });
+        add(txtNombreUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 100, 300, 50));
+
+        jLabelNombreCliente.setFont(new java.awt.Font("Gotham Thin", 0, 24)); // NOI18N
+        jLabelNombreCliente.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelNombreCliente.setText("Nombre");
+        add(jLabelNombreCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 120, 90, 30));
+
+        txtIdUser.setBackground(new java.awt.Color(33, 45, 62));
+        txtIdUser.setFont(new java.awt.Font("Gotham Thin", 0, 24)); // NOI18N
+        txtIdUser.setForeground(new java.awt.Color(195, 218, 227));
+        txtIdUser.setBorder(null);
+        txtIdUser.setCaretColor(new java.awt.Color(73, 181, 172));
+        add(txtIdUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 110, 120, 40));
+
+        jLabelidCliente.setFont(new java.awt.Font("Gotham Thin", 0, 24)); // NOI18N
+        jLabelidCliente.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelidCliente.setText("ID");
+        add(jLabelidCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 120, 40, 30));
+
+        jComboBoxClientesId.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
+        jComboBoxClientesId.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxClientesId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxClientesIdActionPerformed(evt);
+            }
+        });
+        add(jComboBoxClientesId, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 150, 290, -1));
+
+        jSeparator2.setBackground(new java.awt.Color(73, 181, 172));
+        jSeparator2.setForeground(new java.awt.Color(73, 181, 172));
+        add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 150, 130, 20));
+
+        jSeparator3.setBackground(new java.awt.Color(73, 181, 172));
+        jSeparator3.setForeground(new java.awt.Color(73, 181, 172));
+        add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 150, 310, 10));
+
+        jLabelCoincidencias.setFont(new java.awt.Font("Gotham Thin", 0, 24)); // NOI18N
+        jLabelCoincidencias.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelCoincidencias.setText("Coincidencias");
+        add(jLabelCoincidencias, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 110, 160, 30));
+
+        jListHistorial.setBackground(new java.awt.Color(33, 45, 62));
+        jListHistorial.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
+        jListHistorial.setForeground(new java.awt.Color(255, 255, 255));
+        jListHistorial.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jListHistorial);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, 820, 320));
+
+        btnLimpiar.setBackground(new java.awt.Color(73, 181, 172));
+        btnLimpiar.setFont(new java.awt.Font("Gotham Extra Light", 0, 18)); // NOI18N
+        btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
+        btnLimpiar.setText("LIMPIAR");
+        btnLimpiar.setBorderPainted(false);
+        btnLimpiar.setContentAreaFilled(false);
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar.setFocusPainted(false);
+        btnLimpiar.setFocusable(false);
+        btnLimpiar.setRequestFocusEnabled(false);
+        btnLimpiar.setVerifyInputWhenFocusTarget(false);
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 520, 210, 60));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtNombreUserKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreUserKeyReleased
+        String texto = txtNombreUser.getText().trim();
+        if (!texto.isEmpty()) {
+            List<Cliente> resultados = new ArrayList<>();
+            try {
+                jComboBoxClientesId.setVisible(true);
+                jLabelCoincidencias.setVisible(true);
+                jScrollPane1.setVisible(true);
+                resultados = clienteController.buscarClientesPorNombre(texto);
+            } catch (SQLException ex) {
+                System.getLogger(Asistencias.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+
+            jComboBoxClientesId.removeAllItems();
+            for (Cliente c : resultados) {
+                jComboBoxClientesId.addItem(c.getIdCliente() + " - " + c.getNombre());
+            }
+        } else {
+            jComboBoxClientesId.removeAllItems();
+        }
+    }//GEN-LAST:event_txtNombreUserKeyReleased
+
+    private void jComboBoxClientesIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxClientesIdActionPerformed
+        if (jComboBoxClientesId.getSelectedItem() != null) {
+        String seleccionado = (String) jComboBoxClientesId.getSelectedItem();
+        int idCliente = Integer.parseInt(seleccionado.split(" - ")[0]);
+        txtIdUser.setText(String.valueOf(idCliente));
+
+        try {
+            ConsultasController consultasController = new ConsultasController(DBConfig.getConnection());
+            List<String> info = consultasController.obtenerInfoCliente(idCliente);
+            jListHistorial.setListData(info.toArray(new String[0]));
+        } catch (SQLException ex) {
+            javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Error al obtener información del cliente:\n" + ex.getMessage(),
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+    }//GEN-LAST:event_jComboBoxClientesIdActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        jComboBoxClientesId.setSelectedIndex(-1);
+        txtIdUser.setText("");
+        txtNombreUser.setText("");
+        jListHistorial.setListData(new String[0]);
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JComboBox<String> jComboBoxClientesId;
+    private javax.swing.JLabel jLabelCoincidencias;
+    private javax.swing.JLabel jLabelDescripcion;
+    private javax.swing.JLabel jLabelNombreCliente;
+    private javax.swing.JLabel jLabelSeparador;
+    private javax.swing.JLabel jLabelidCliente;
+    private javax.swing.JList<String> jListHistorial;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JTextField txtIdUser;
+    private javax.swing.JTextField txtNombreUser;
     // End of variables declaration//GEN-END:variables
 }

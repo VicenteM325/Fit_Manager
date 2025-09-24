@@ -68,4 +68,26 @@ public class AsistenciaDAO {
         }
         return clientes;
     }
+    
+    public List<Asistencia> obtenerAsistenciasPorCliente(int idCliente) throws SQLException {
+    List<Asistencia> asistencias = new ArrayList<>();
+    String sql = "SELECT * FROM fitmanager.asistencia WHERE id_cliente = ? ORDER BY fecha_hora DESC";
+
+    try (Connection conn = DBConfig.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setInt(1, idCliente);
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Asistencia a = new Asistencia();
+                a.setIdAsistencia(rs.getLong("id_asistencia"));
+                a.setFechaHora(rs.getTimestamp("fecha_hora"));
+                a.setIdCliente(rs.getInt("id_cliente"));
+                a.setIdSucursal(rs.getInt("id_sucursal"));
+                asistencias.add(a);
+            }
+        }
+    }
+    return asistencias;
+}
 }

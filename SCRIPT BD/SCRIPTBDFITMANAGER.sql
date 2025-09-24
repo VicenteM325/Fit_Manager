@@ -147,6 +147,7 @@ CREATE TABLE pago (
     fecha_pago TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
     fecha_inicio DATE,
     fecha_fin DATE,
+    id_plan INT REFERENCES plan_basico(id_plan) ON DELETE SET NULL,
     id_cliente INTEGER REFERENCES cliente(id_cliente) ON DELETE CASCADE
 );
 

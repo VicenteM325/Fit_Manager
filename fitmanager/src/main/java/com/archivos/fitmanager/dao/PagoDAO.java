@@ -220,62 +220,81 @@ public class PagoDAO {
         }
         return 0.0;
     }
-    
+
     public boolean registrarPagoConServicios(Pago pago, List<Integer> serviciosSeleccionados) throws SQLException {
-    String sqlPago = "INSERT INTO pago (id_tipo_pago, monto, fecha_inicio, fecha_fin, id_cliente, id_plan) " +
-                     "VALUES (?, ?, ?, ?, ?, ?) RETURNING id_pago";
+        String sqlPago = "INSERT INTO pago (id_tipo_pago, monto, fecha_inicio, fecha_fin, id_cliente, id_plan) "
+                + "VALUES (?, ?, ?, ?, ?, ?) RETURNING id_pago";
 
-    String sqlPagoServicio = "INSERT INTO pago_servicio (id_pago, id_servicio, cantidad) VALUES (?, ?, ?)";
+        String sqlPagoServicio = "INSERT INTO pago_servicio (id_pago, id_servicio, cantidad) VALUES (?, ?, ?)";
 
-    try {
-        conn.setAutoCommit(false); // Inicia la transacción
-        int idPagoGenerado = -1;
+        try {
+            conn.setAutoCommit(false); // Inicia la transacción
+            int idPagoGenerado = -1;
 
-        // Insertar el pago
-        try (PreparedStatement ps = conn.prepareStatement(sqlPago)) {
-            ps.setInt(1, pago.getIdTipoPago());
-            ps.setDouble(2, pago.getMonto());
-            ps.setDate(3, pago.getFechaInicio());
-            ps.setDate(4, pago.getFechaFin());
-            if (pago.getIdCliente() != 0) {
-                ps.setInt(5, pago.getIdCliente());
-            } else {
-                ps.setNull(5, java.sql.Types.INTEGER);
-            }
-            if (pago.getIdPlan() != 0) {
-                ps.setInt(6, pago.getIdPlan());
-            } else {
-                ps.setNull(6, java.sql.Types.INTEGER);
-            }
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                idPagoGenerado = rs.getInt("id_pago");
-            }
-        }
-
-        //Insertar servicios adicionales asociados al pago
-        if (serviciosSeleccionados != null && !serviciosSeleccionados.isEmpty()) {
-            try (PreparedStatement ps = conn.prepareStatement(sqlPagoServicio)) {
-                for (Integer idServicio : serviciosSeleccionados) {
-                    ps.setInt(1, idPagoGenerado);
-                    ps.setInt(2, idServicio);
-                    ps.setInt(3, 1);
-                    ps.addBatch();
+            // Insertar el pago
+            try (PreparedStatement ps = conn.prepareStatement(sqlPago)) {
+                ps.setInt(1, pago.getIdTipoPago());
+                ps.setDouble(2, pago.getMonto());
+                ps.setDate(3, pago.getFechaInicio());
+                ps.setDate(4, pago.getFechaFin());
+                if (pago.getIdCliente() != 0) {
+                    ps.setInt(5, pago.getIdCliente());
+                } else {
+                    ps.setNull(5, java.sql.Types.INTEGER);
                 }
-                ps.executeBatch();
+                if (pago.getIdPlan() != 0) {
+                    ps.setInt(6, pago.getIdPlan());
+                } else {
+                    ps.setNull(6, java.sql.Types.INTEGER);
+                }
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    idPagoGenerado = rs.getInt("id_pago");
+                }
+            }
+
+            //Insertar servicios adicionales asociados al pago
+            if (serviciosSeleccionados != null && !serviciosSeleccionados.isEmpty()) {
+                try (PreparedStatement ps = conn.prepareStatement(sqlPagoServicio)) {
+                    for (Integer idServicio : serviciosSeleccionados) {
+                        ps.setInt(1, idPagoGenerado);
+                        ps.setInt(2, idServicio);
+                        ps.setInt(3, 1);
+                        ps.addBatch();
+                    }
+                    ps.executeBatch();
+                }
+            }
+
+            conn.commit();
+            return true;
+
+        } catch (SQLException e) {
+            conn.rollback();
+            throw e;
+        } finally {
+            conn.setAutoCommit(true);
+        }
+    }
+
+    public List<String> obtenerServiciosAdicionalesPorPago(int idPago) throws SQLException {
+        List<String> servicios = new ArrayList<>();
+        String sql = """
+        SELECT sa.nombre, ps.cantidad
+        FROM pago_servicio ps
+        JOIN servicio_adicional sa ON ps.id_servicio = sa.id_servicio
+        WHERE ps.id_pago = ?
+    """;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idPago);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    servicios.add(rs.getString("nombre") + " x" + rs.getInt("cantidad"));
+                }
             }
         }
-
-        conn.commit(); 
-        return true;
-
-    } catch (SQLException e) {
-        conn.rollback(); 
-        throw e;
-    } finally {
-        conn.setAutoCommit(true);
+        return servicios;
     }
-}
-
 }

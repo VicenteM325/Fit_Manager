@@ -15,6 +15,7 @@ public class Recepcion extends javax.swing.JFrame {
     
     RegistrarCliente clienteR = new RegistrarCliente();
     Asistencias asistencias = new Asistencias();
+    Consultas consultas = new Consultas();
     Pagos membresia = new Pagos();
     int xMouse, yMouse;
     /**
@@ -471,7 +472,7 @@ public class Recepcion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPagoMouseExited
 
     private void btnConsultasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConsultasMouseClicked
-        // TODO add your handling code here:
+        ShowPanel(consultas);
     }//GEN-LAST:event_btnConsultasMouseClicked
 
     private void btnConsultasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConsultasMouseEntered
