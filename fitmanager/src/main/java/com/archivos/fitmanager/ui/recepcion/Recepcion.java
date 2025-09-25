@@ -1,5 +1,7 @@
 package com.archivos.fitmanager.ui.recepcion;
 
+import com.archivos.fitmanager.login.SessionManager;
+import com.archivos.fitmanager.ui.Login;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -38,6 +40,8 @@ public class Recepcion extends javax.swing.JFrame {
             p.setBackground(defaultColor);
             addHoverEffect(p, hoverColor, defaultColor);
         }
+        jLabelUser.setText(SessionManager.getNombreUsuario()
+                + " - " + SessionManager.getRol());
     }
 
     /**
@@ -83,6 +87,9 @@ public class Recepcion extends javax.swing.JFrame {
         btnAsistencias = new javax.swing.JPanel();
         JLabelAsistencia = new javax.swing.JLabel();
         jLabelStart3 = new javax.swing.JLabel();
+        jLabelIconoSesion = new javax.swing.JLabel();
+        btnCerrarSesion = new javax.swing.JButton();
+        jLabelUser = new javax.swing.JLabel();
         panelCabeza = new javax.swing.JPanel();
         jPanelCerrar = new javax.swing.JPanel();
         LabelExit = new javax.swing.JLabel();
@@ -330,6 +337,32 @@ public class Recepcion extends javax.swing.JFrame {
 
         jpanelMenu.add(btnAsistencias, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, -1, -1));
 
+        jLabelIconoSesion.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelIconoSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/login.png"))); // NOI18N
+        jpanelMenu.add(jLabelIconoSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 520, 50, 60));
+
+        btnCerrarSesion.setBackground(new java.awt.Color(73, 181, 172));
+        btnCerrarSesion.setFont(new java.awt.Font("Gotham Extra Light", 0, 18)); // NOI18N
+        btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
+        btnCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/CerrarSesion.png"))); // NOI18N
+        btnCerrarSesion.setBorderPainted(false);
+        btnCerrarSesion.setContentAreaFilled(false);
+        btnCerrarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCerrarSesion.setFocusPainted(false);
+        btnCerrarSesion.setFocusable(false);
+        btnCerrarSesion.setRequestFocusEnabled(false);
+        btnCerrarSesion.setVerifyInputWhenFocusTarget(false);
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
+        jpanelMenu.add(btnCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 520, 60, 60));
+
+        jLabelUser.setFont(new java.awt.Font("sansserif", 0, 21)); // NOI18N
+        jLabelUser.setForeground(new java.awt.Color(255, 255, 255));
+        jpanelMenu.add(jLabelUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 590, 260, 50));
+
         getContentPane().add(jpanelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 270, 660));
 
         panelCabeza.setBackground(new java.awt.Color(33, 45, 62));
@@ -495,6 +528,12 @@ public class Recepcion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAsistenciasMouseExited
 
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        SessionManager.cerrarSesion();
+        this.dispose();
+        new Login().setVisible(true);
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -535,6 +574,7 @@ public class Recepcion extends javax.swing.JFrame {
     private javax.swing.JLabel JLabelAsistencia;
     private javax.swing.JLabel LabelExit;
     private javax.swing.JPanel btnAsistencias;
+    private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JPanel btnClienteNuevo;
     private javax.swing.JPanel btnConsultas;
     private javax.swing.JPanel btnHome;
@@ -545,11 +585,13 @@ public class Recepcion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelHome;
+    private javax.swing.JLabel jLabelIconoSesion;
     private javax.swing.JLabel jLabelStart;
     private javax.swing.JLabel jLabelStart1;
     private javax.swing.JLabel jLabelStart2;
     private javax.swing.JLabel jLabelStart3;
     private javax.swing.JLabel jLabelTravel1;
+    private javax.swing.JLabel jLabelUser;
     private javax.swing.JPanel jPanelCerrar;
     private javax.swing.JPanel jPanelContent;
     private javax.swing.JPanel jpanelMenu;

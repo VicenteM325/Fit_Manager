@@ -6,6 +6,7 @@ import com.archivos.fitmanager.login.SessionManager;
 import com.archivos.fitmanager.model.Empleado;
 import com.archivos.fitmanager.ui.admin.Admin;
 import com.archivos.fitmanager.ui.entrenador.Entrenador;
+import com.archivos.fitmanager.ui.inventario.Inventario;
 import com.archivos.fitmanager.ui.recepcion.Recepcion;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -213,6 +214,9 @@ public class Login extends javax.swing.JFrame {
         Empleado emp = empleadoDAO.login(usuario, contrasena);
 
         if (emp != null) {
+
+            SessionManager.iniciarSesion(emp.getIdEmpleado(), emp.getNombre(), emp.getRolNombre());
+
             switch (emp.getRolNombre()) {
                 case "Administrador" -> {
                     JFrame adminFrame = new Admin();
@@ -223,20 +227,21 @@ public class Login extends javax.swing.JFrame {
                     recepcionFrame.setVisible(true);
                 }
                 case "Entrenador" -> {
-                    SessionManager.iniciarSesion(emp.getIdEmpleado(), emp.getNombre(), "ENTRENADOR");
                     JFrame entrenadorFrame = new Entrenador();
                     entrenadorFrame.setVisible(true);
                 }
-
+                case "Inventario" -> {
+                    JFrame inventarioFrame = new Inventario();
+                    inventarioFrame.setVisible(true);
+                }
                 default -> {
                     JOptionPane.showMessageDialog(this,
                             "Rol no reconocido: " + emp.getRolNombre(),
                             "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
             }
-
             this.dispose();
-
         } else {
             JOptionPane.showMessageDialog(this,
                     "Usuario o contraseña incorrectos",

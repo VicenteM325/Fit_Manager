@@ -38,4 +38,8 @@ public class ClienteController {
         }
         return clienteDAO.buscarClientesPorNombre(nombre);
     }
+    
+    public List<Cliente> obtenerClientesPorEntrenador(int idEntrenador) throws SQLException {
+    return clienteDAO.obtenerClientesPorEntrenador(idEntrenador);
+}
 }

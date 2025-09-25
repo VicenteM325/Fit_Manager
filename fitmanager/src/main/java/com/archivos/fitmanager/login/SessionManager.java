@@ -18,8 +18,18 @@ public class SessionManager {
     public static int getIdUsuario() {
         return idUsuario;
     }
+    
+    public static String getNombreUsuario(){
+        return nombreUsuario;
+    }
 
     public static String getRol() {
         return rol;
+    }
+
+    public static void cerrarSesion() {
+        idUsuario = 0;
+        nombreUsuario = null;
+        rol = null;
     }
 }

@@ -33,4 +33,21 @@ public class SucursalDAO {
         }
         return lista;
     }
+
+    public Sucursal obtenerSucursalPorId(int id) throws SQLException {
+        String sql = "SELECT id_sucursal, nombre, ubicacion, capacidad_maquinas FROM sucursal WHERE id_sucursal = ?";
+        try (Connection c = DBConfig.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Sucursal(
+                        rs.getInt("id_sucursal"),
+                        rs.getString("nombre"),
+                        rs.getString("ubicacion"),
+                        rs.getInt("capacidad_maquinas")
+                );
+            }
+        }
+        return null;
+    }
 }
