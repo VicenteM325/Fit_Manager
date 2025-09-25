@@ -1,4 +1,4 @@
-package com.archivos.fitmanager;
+package com.archivos.fitmanager.service;
 
 import com.archivos.fitmanager.dao.RutinaDAO;
 import com.archivos.fitmanager.model.Rutina;
@@ -21,13 +21,17 @@ public class RutinaService {
     }
 
     public Rutina crearRutinaConEjercicios(Rutina rutina, List<Integer> ejerciciosIds) throws SQLException {
+        // Validar que la rutina tenga al menos 4 ejercicios
+        if (ejerciciosIds == null || ejerciciosIds.size() < 4) {
+            throw new SQLException("La rutina debe tener al menos 4 ejercicios.");
+        }
+
         try {
             conn.setAutoCommit(false);
 
-            // Crear la rutina
+
             Rutina nueva = rutinaDAO.crearRutina(rutina);
 
-            // Asignar los ejercicios con orden incremental
             int orden = 1;
             for (Integer idEjercicio : ejerciciosIds) {
                 rutinaDAO.asignarEjercicio(nueva.getIdRutina(), idEjercicio, orden++);
@@ -41,5 +45,9 @@ public class RutinaService {
         } finally {
             conn.setAutoCommit(true);
         }
+    }
+
+    public int contarRutinasPorCliente(int idCliente) throws SQLException {
+        return rutinaDAO.contarPorCliente(idCliente);
     }
 }

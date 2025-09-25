@@ -13,6 +13,8 @@ public class Entrenador extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Entrenador.class.getName());
     Ejercicios ejercicio = new Ejercicios();
+    Rutinas rutinas = new Rutinas();
+    ConsultaRutinas consultas = new ConsultaRutinas();
 
     int xMouse, yMouse;
 
@@ -396,7 +398,7 @@ public class Entrenador extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHomeMouseExited
 
     private void btnRutinaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRutinaMouseClicked
-        //   ShowPanel(clienteR);
+           ShowPanel(rutinas);
     }//GEN-LAST:event_btnRutinaMouseClicked
 
     private void btnRutinaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRutinaMouseEntered
@@ -420,7 +422,7 @@ public class Entrenador extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEjerciciosMouseExited
 
     private void btnConsultasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConsultasMouseClicked
-        // ShowPanel(consultas);
+         ShowPanel(consultas);
     }//GEN-LAST:event_btnConsultasMouseClicked
 
     private void btnConsultasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConsultasMouseEntered

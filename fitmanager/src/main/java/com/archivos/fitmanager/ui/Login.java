@@ -2,6 +2,7 @@ package com.archivos.fitmanager.ui;
 
 
 import com.archivos.fitmanager.dao.EmpleadoDAO;
+import com.archivos.fitmanager.login.SessionManager;
 import com.archivos.fitmanager.model.Empleado;
 import com.archivos.fitmanager.ui.admin.Admin;
 import com.archivos.fitmanager.ui.entrenador.Entrenador;
@@ -198,52 +199,52 @@ public class Login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Login().setVisible(true));
     }
-    
+
     private void realizarLogin() {
-    String usuario = txtcorreo.getText().trim();
-    String contrasena = new String(txtpassword.getPassword());
+        String usuario = txtcorreo.getText().trim();
+        String contrasena = new String(txtpassword.getPassword());
 
-    if (usuario.isEmpty() || contrasena.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Debe ingresar usuario y contraseña", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
+        if (usuario.isEmpty() || contrasena.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar usuario y contraseña", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+        Empleado emp = empleadoDAO.login(usuario, contrasena);
+
+        if (emp != null) {
+            switch (emp.getRolNombre()) {
+                case "Administrador" -> {
+                    JFrame adminFrame = new Admin();
+                    adminFrame.setVisible(true);
+                }
+                case "Recepcionista" -> {
+                    JFrame recepcionFrame = new Recepcion();
+                    recepcionFrame.setVisible(true);
+                }
+                case "Entrenador" -> {
+                    SessionManager.iniciarSesion(emp.getIdEmpleado(), emp.getNombre(), "ENTRENADOR");
+                    JFrame entrenadorFrame = new Entrenador();
+                    entrenadorFrame.setVisible(true);
+                }
+
+                default -> {
+                    JOptionPane.showMessageDialog(this,
+                            "Rol no reconocido: " + emp.getRolNombre(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+            this.dispose();
+
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Usuario o contraseña incorrectos",
+                    "Login Fallido", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
-    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
-    Empleado emp = empleadoDAO.login(usuario, contrasena);
-
-    if (emp != null) {
-        switch (emp.getRolNombre()) {
-        case "Administrador" -> {
-            JFrame adminFrame = new Admin(); 
-            adminFrame.setVisible(true);
-        }
-        case "Recepcionista" -> {
-            JFrame recepcionFrame = new Recepcion(); 
-            recepcionFrame.setVisible(true);
-        }
-        case "Entrenador" -> {
-            JFrame entrenadorFrame = new Entrenador(); 
-            entrenadorFrame.setVisible(true);
-        }
-
-
-        default -> {
-            JOptionPane.showMessageDialog(this, 
-                "Rol no reconocido: " + emp.getRolNombre(), 
-                "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    this.dispose();
-
-} else {
-    JOptionPane.showMessageDialog(this, 
-        "Usuario o contraseña incorrectos", 
-        "Login Fallido", JOptionPane.ERROR_MESSAGE);
-}
-
-}
-    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

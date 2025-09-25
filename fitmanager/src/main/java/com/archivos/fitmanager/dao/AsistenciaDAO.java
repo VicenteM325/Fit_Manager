@@ -2,6 +2,7 @@ package com.archivos.fitmanager.dao;
 
 import com.archivos.fitmanager.db.DBConfig;
 import com.archivos.fitmanager.model.Asistencia;
+import com.archivos.fitmanager.model.AsistenciaHistorial;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,9 +34,7 @@ public class AsistenciaDAO {
         List<Asistencia> asistencias = new ArrayList<>();
         String sql = "SELECT * FROM fitmanager.asistencia ORDER BY fecha_hora DESC";
 
-        try (Connection conn = DBConfig.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = DBConfig.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 Asistencia a = new Asistencia();
@@ -58,9 +57,7 @@ public class AsistenciaDAO {
             ORDER BY a.fecha_hora DESC
         """;
 
-        try (Connection conn = DBConfig.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = DBConfig.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 clientes.add(rs.getInt("id_cliente") + " - " + rs.getString("cliente"));
@@ -68,26 +65,60 @@ public class AsistenciaDAO {
         }
         return clientes;
     }
-    
+
     public List<Asistencia> obtenerAsistenciasPorCliente(int idCliente) throws SQLException {
-    List<Asistencia> asistencias = new ArrayList<>();
-    String sql = "SELECT * FROM fitmanager.asistencia WHERE id_cliente = ? ORDER BY fecha_hora DESC";
+        List<Asistencia> asistencias = new ArrayList<>();
+        String sql = "SELECT * FROM fitmanager.asistencia WHERE id_cliente = ? ORDER BY fecha_hora DESC";
 
-    try (Connection conn = DBConfig.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        stmt.setInt(1, idCliente);
-        try (ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Asistencia a = new Asistencia();
-                a.setIdAsistencia(rs.getLong("id_asistencia"));
-                a.setFechaHora(rs.getTimestamp("fecha_hora"));
-                a.setIdCliente(rs.getInt("id_cliente"));
-                a.setIdSucursal(rs.getInt("id_sucursal"));
-                asistencias.add(a);
+            stmt.setInt(1, idCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Asistencia a = new Asistencia();
+                    a.setIdAsistencia(rs.getLong("id_asistencia"));
+                    a.setFechaHora(rs.getTimestamp("fecha_hora"));
+                    a.setIdCliente(rs.getInt("id_cliente"));
+                    a.setIdSucursal(rs.getInt("id_sucursal"));
+                    asistencias.add(a);
+                }
             }
         }
+        return asistencias;
     }
-    return asistencias;
-}
+
+    public List<AsistenciaHistorial> obtenerHistorialPorEntrenador(int idEntrenador) throws SQLException {
+        String sql = """
+        SELECT e.id_empleado, e.nombre || ' ' || e.apellido AS entrenador,
+               c.id_cliente, c.nombre || ' ' || c.apellido AS cliente,
+               a.id_asistencia, a.fecha_hora, s.nombre AS sucursal
+        FROM fitmanager.asistencia a
+        JOIN fitmanager.cliente c ON a.id_cliente = c.id_cliente
+        JOIN fitmanager.entrenador_cliente ec ON c.id_cliente = ec.id_cliente
+        JOIN fitmanager.empleado e ON ec.id_entrenador = e.id_empleado
+        LEFT JOIN fitmanager.sucursal s ON a.id_sucursal = s.id_sucursal
+        WHERE e.id_empleado = ?
+        ORDER BY a.fecha_hora DESC
+    """;
+
+        List<AsistenciaHistorial> historial = new ArrayList<>();
+
+        try (Connection conn = DBConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idEntrenador);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    AsistenciaHistorial h = new AsistenciaHistorial(
+                            rs.getInt("id_asistencia"),
+                            rs.getInt("id_cliente"),
+                            rs.getString("cliente"),
+                            rs.getTimestamp("fecha_hora"),
+                            rs.getString("sucursal")
+                    );
+                    historial.add(h);
+                }
+            }
+        }
+        return historial;
+    }
 }

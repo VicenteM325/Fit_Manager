@@ -119,4 +119,29 @@ public class ClienteDAO {
         }
         return clientes;
     }
+
+    public List<Cliente> obtenerClientesPorEntrenador(int idEntrenador) throws SQLException {
+        List<Cliente> clientes = new ArrayList<>();
+        String sql = """
+        SELECT c.id_cliente, c.nombre, c.apellido, c.telefono
+        FROM cliente c
+        INNER JOIN entrenador_cliente ec ON c.id_cliente = ec.id_cliente
+        WHERE ec.id_entrenador = ?
+    """;
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idEntrenador);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Cliente c = new Cliente(
+                        rs.getInt("id_cliente"),
+                        rs.getString("nombre"),
+                        rs.getString("apellido"),
+                        rs.getString("telefono")
+                );
+                clientes.add(c);
+            }
+        }
+        return clientes;
+    }
 }

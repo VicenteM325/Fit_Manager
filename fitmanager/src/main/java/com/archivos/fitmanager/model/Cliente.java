@@ -24,7 +24,6 @@ public class Cliente {
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
-        this.fechaRegistro = fechaRegistro;
         this.idEntrenador = idEntrenador;
         this.idMembresia = idMembresia;
     }
@@ -39,6 +38,13 @@ public class Cliente {
     }
 
     public Cliente(String nombre, String apellido, String telefono) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
+    }
+    
+    public Cliente(int idCliente, String nombre, String apellido, String telefono) {
+        this.idCliente = idCliente;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;

@@ -72,6 +72,7 @@ public class Ejercicios extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(33, 45, 62));
+        setMinimumSize(new java.awt.Dimension(1040, 600));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtNombreEjercicio.setBackground(new java.awt.Color(33, 45, 62));
@@ -79,6 +80,11 @@ public class Ejercicios extends javax.swing.JPanel {
         txtNombreEjercicio.setForeground(new java.awt.Color(195, 218, 227));
         txtNombreEjercicio.setBorder(null);
         txtNombreEjercicio.setCaretColor(new java.awt.Color(73, 181, 172));
+        txtNombreEjercicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreEjercicioActionPerformed(evt);
+            }
+        });
         txtNombreEjercicio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtNombreEjercicioKeyReleased(evt);
@@ -190,16 +196,20 @@ public class Ejercicios extends javax.swing.JPanel {
             boolean creado = ejercicioController.crearEjercicio(e);
 
             if (creado) {
-                JOptionPane.showMessageDialog(this, "Ejercicio registrado con éxito ✅");
+                JOptionPane.showMessageDialog(this, "Ejercicio registrado con éxito");
                 limpiarCampos();
             } else {
-                JOptionPane.showMessageDialog(this, "No se pudo registrar el ejercicio ❌");
+                JOptionPane.showMessageDialog(this, "No se pudo registrar el ejercicio");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtNombreEjercicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreEjercicioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreEjercicioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

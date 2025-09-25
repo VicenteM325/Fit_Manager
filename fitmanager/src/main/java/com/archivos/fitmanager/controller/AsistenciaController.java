@@ -2,8 +2,10 @@ package com.archivos.fitmanager.controller;
 
 import com.archivos.fitmanager.dao.AsistenciaDAO;
 import com.archivos.fitmanager.model.Asistencia;
+import com.archivos.fitmanager.model.AsistenciaHistorial;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,4 +45,26 @@ public class AsistenciaController {
             return null;
         }
     }
+
+    public List<AsistenciaHistorial> historialPorCliente(int idCliente) throws SQLException {
+        List<Asistencia> asistencias = asistenciaDAO.obtenerAsistenciasPorCliente(idCliente);
+        List<AsistenciaHistorial> historial = new ArrayList<>();
+
+        for (Asistencia a : asistencias) {
+            historial.add(new AsistenciaHistorial(
+                    (int) a.getIdAsistencia(),
+                    a.getIdCliente(),
+                    "Cliente " + a.getIdCliente(), 
+                    a.getFechaHora(),
+                    "Sucursal " + a.getIdSucursal()
+            ));
+        }
+        return historial;
+    }
+
+    public List<AsistenciaHistorial> historialPorEntrenador(int idEntrenador) throws SQLException {
+        return asistenciaDAO.obtenerHistorialPorEntrenador(idEntrenador);
+    }
+    
+    
 }

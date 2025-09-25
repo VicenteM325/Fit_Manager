@@ -88,8 +88,8 @@ public class EjercicioDAO {
     public List<Ejercicio> obtenerEjerciciosPorRutina(int idRutina) throws SQLException {
         List<Ejercicio> lista = new ArrayList<>();
         String sql = "SELECT e.* FROM ejercicio e " +
-                     "INNER JOIN rutina_ejercicio re ON e.id_ejercicio = re.id_ejercicio " +
-                     "WHERE re.id_rutina = ? ORDER BY re.orden";
+ "INNER JOIN rutina_ejercicio re ON e.id_ejercicio = re.id_ejercicio "
+                + "WHERE re.id_rutina = ? ORDER BY re.orden";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idRutina);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -108,4 +108,15 @@ public class EjercicioDAO {
         return lista;
     }
 
+    public int obtenerIdPorNombre(String nombre) throws SQLException {
+        String sql = "SELECT id_ejercicio FROM ejercicio WHERE nombre = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nombre);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id_ejercicio");
+            }
+        }
+        return -1; 
+    }
 }
